@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "start": "rollup --watch --format=iife --sourcemap=inline --input=index.js --output=bundle.js && open index.html"
+  },
+  "dependencies": {
+    "rollup": "^0.41.6",
+    "rollup-watch": "^3.2.2"
+  }
+}

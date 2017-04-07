@@ -1,0 +1,34 @@
+{
+  "name": "spring-animator",
+  "version": "1.0.0",
+  "description": "a little tool for animating scalar and vector values with spring forces",
+  "main": "index.js",
+  "license": "MIT",
+  "author": {
+    "name": "Taylor Baldwin",
+    "email": "taylorbaldwin@gmail.com",
+    "url": "https://tbaldw.in/"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "standard": "^10.0.1"
+  },
+  "scripts": {
+    "test": "node test.js",
+    "lint": "standard"
+  },
+  "keywords": [
+    "animate,",
+    "animation,",
+    "spring,",
+    "physics"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rolyatmax/spring-animator.git"
+  },
+  "homepage": "https://github.com/rolyatmax/spring-animator",
+  "bugs": {
+    "url": "https://github.com/rolyatmax/spring-animator/issues"
+  }
+}
