@@ -1,6 +1,6 @@
 {
   "name": "spring-animator",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "a little tool for animating scalar and vector values with spring forces",
   "main": "umd.js",
   "module": "index.js",
