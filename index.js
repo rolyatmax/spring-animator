@@ -1,4 +1,4 @@
-export function createScalarSpring (stiffness, dampening, value, lastValue = null) {
+export function createSpring (stiffness, dampening, value, lastValue = null) {
   lastValue = lastValue || value
   let destinationValue = value
 
@@ -33,7 +33,8 @@ export function createScalarSpring (stiffness, dampening, value, lastValue = nul
     let _lastValue = lastValue
     while (steps--) {
       const velocity = _value - _lastValue
-      const spring = (destinationValue - _value) * stiffness
+      const delta = destinationValue - _value
+      const spring = delta * stiffness
       const damper = velocity * -dampening
       const acceleration = spring + damper
       const nextValue = acceleration + velocity + _value

@@ -1,8 +1,8 @@
-# [WIP] spring-animator
+# spring-animator
 
 [![experimental](http://badges.github.io/stability-badges/dist/experimental.svg)](http://github.com/badges/stability-badges)
 
-a little tool for animating scalar and vector values with spring forces
+a little tool for easing values with spring forces for animations
 
 ## Install
 

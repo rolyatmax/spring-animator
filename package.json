@@ -2,25 +2,34 @@
   "name": "spring-animator",
   "version": "1.0.0",
   "description": "a little tool for animating scalar and vector values with spring forces",
-  "main": "index.js",
+  "main": "umd.js",
+  "module": "index.js",
   "license": "MIT",
   "author": {
     "name": "Taylor Baldwin",
     "email": "taylorbaldwin@gmail.com",
     "url": "https://tbaldw.in/"
   },
-  "dependencies": {},
+  "dependencies": {
+    "rollup": "^0.41.6"
+  },
   "devDependencies": {
     "standard": "^10.0.1"
   },
   "scripts": {
+    "build": "rollup --format=umd --name=SpringAnimator -- index.js > umd.js",
     "test": "node test.js",
-    "lint": "standard"
+    "lint": "standard",
+    "prepublish": "npm run build && npm run lint"
   },
+  "files": [
+    "umd.js",
+    "index.js"
+  ],
   "keywords": [
-    "animate,",
-    "animation,",
-    "spring,",
+    "animate",
+    "animation",
+    "spring",
     "physics"
   ],
   "repository": {
