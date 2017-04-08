@@ -56,6 +56,14 @@ function loop () {
 }
 ```
 
+## To run the example:
+
+```sh
+cd example
+npm install
+npm start
+```
+
 [![NPM](https://nodei.co/npm/spring-animator.png)](https://www.npmjs.com/package/spring-animator)
 
 ## License
