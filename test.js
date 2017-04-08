@@ -1,7 +1,7 @@
-var springAnimator = require('./')
-var test = require('tape')
+const { createSpring } = require('./')
+const test = require('tape')
 
-test('does it werq?', function(t) {
-
+test('createSpring should be a function', function (t) {
+  t.equal(typeof createSpring, 'function')
   t.end()
 })

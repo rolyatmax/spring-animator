@@ -10,11 +10,11 @@
     "email": "taylorbaldwin@gmail.com",
     "url": "https://tbaldw.in/"
   },
-  "dependencies": {
-    "rollup": "^0.41.6"
-  },
+  "dependencies": {},
   "devDependencies": {
-    "standard": "^10.0.1"
+    "rollup": "^0.41.6",
+    "standard": "^10.0.1",
+    "tape": "^4.6.3"
   },
   "scripts": {
     "build": "rollup --format=umd --name=SpringAnimator -- index.js > umd.js",
@@ -32,6 +32,11 @@
     "spring",
     "physics"
   ],
+  "standard": {
+    "ignore": [
+      "umd.js"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/rolyatmax/spring-animator.git"
