@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "start": "open index.html && rollup --watch --config=rollup.config.js"
+    "start": "open index.html && rollup --watch --config=rollup.config.js",
+    "build": "mkdir -p ../docs && rollup --config=rollup.config.js && cp index.html ../docs/ && cp bundle.js ../docs/"
   },
   "dependencies": {
     "dat-gui": "^0.5.0",
