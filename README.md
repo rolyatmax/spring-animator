@@ -2,7 +2,9 @@
 
 [![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
 
-a little tool for easing values with spring forces for animations
+A little tool for easing values with spring forces for animations.
+
+Here's [an example](https://rolyatmax.github.io/spring-animator/).
 
 ## Install
 
@@ -63,6 +65,8 @@ cd example
 npm install
 npm start
 ```
+
+Or try it out [here](https://rolyatmax.github.io/spring-animator/).
 
 [![NPM](https://nodei.co/npm/spring-animator.png)](https://www.npmjs.com/package/spring-animator)
 
