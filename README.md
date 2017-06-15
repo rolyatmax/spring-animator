@@ -19,8 +19,8 @@ npm install spring-animator --save
 ```js
 import { createSpring } from 'spring-animator'
 
-const dampening: 0.28
-const stiffness: 0.03
+const dampening = 0.28
+const stiffness = 0.03
 const startingValue = 10
 
 const spring = createSpring(stiffness, dampening, startingValue)
