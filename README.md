@@ -19,8 +19,8 @@ npm install spring-animator --save
 ```js
 import { createSpring } from 'spring-animator'
 
-const dampening = 0.28
 const stiffness = 0.03
+const dampening = 0.28
 const startingValue = 10
 
 const spring = createSpring(stiffness, dampening, startingValue)
@@ -37,26 +37,6 @@ spring.tick() // takes one step towards destination value and returns the new va
 spring.tick(0.1, 0.5)
 
 spring.getCurrentValue() // returns the current value
-```
-
-### To animate 2D vectors, for example:
-
-```js
-const xSpring = createSpring(stiffness, dampening, 50)
-const ySpring = createSpring(stiffness, dampening, 50)
-
-document.body.addEventListener('click', (e) => {
-  xSpring.setDestination(e.clientX)
-  ySpring.setDestination(e.clientY)
-})
-
-loop()
-function loop () {
-  requestAnimationFrame(loop)
-  const x = xSpring.tick()
-  const y = ySpring.tick()
-  renderObjectAtPosition([x, y])
-}
 ```
 
 ## To run the example:
