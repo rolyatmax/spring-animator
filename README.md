@@ -1,6 +1,6 @@
 # spring-animator
 
-[![unstable](http://badges.github.io/stability-badges/dist/unstable.svg)](http://github.com/badges/stability-badges)
+[![stable](http://badges.github.io/stability-badges/dist/stable.svg)](http://github.com/badges/stability-badges)
 
 A little tool for easing values with spring forces for animations.
 
