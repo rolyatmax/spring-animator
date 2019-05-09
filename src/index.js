@@ -1,14 +1,39 @@
-export function createSpring (stiffness, dampening, value, lastValue = null) {
-  lastValue = lastValue || value
+import vec4 from 'gl-vec4'
+
+export function createSpring (stiffness, dampening, value, precision = Number.EPSILON) {
+  const isInputArray = Array.isArray(value)
+  const vecComponents = isInputArray ? value.length : Number.isFinite(value) ? 1 : null
+
+  if (!vecComponents || vecComponents > 4) {
+    throw new Error(`spring-animator: expected value \`${value}\` to be a scalar, vec2, vec3, or vec4`)
+  }
+
+  function makeValueVec4 (v) {
+    if (isInputArray !== Array.isArray(v) || (isInputArray && vecComponents !== v.length)) {
+      throw new Error(`spring-animator: destination value type must match initial value type: ${!isInputArray ? 'scalar' : vecComponents + '-component vector'}`)
+    }
+    if (Number.isFinite(v)) return [v, 0, 0, 0]
+    while (v.length < 4) v.push(0)
+    return 0
+  }
+
+  value = makeValueVec4(value)
+  let lastValue = value
   let destinationValue = value
 
+  // set up some reusable arrays to use in tick()
+  let velocity = []
+  let delta = []
+
   return {
-    updateValue,
+    setDestination,
+    getCurrentValue,
     isAtDestination,
     tick
   }
 
-  function updateValue (newValue, shouldAnimate = true) {
+  function setDestination (newValue, shouldAnimate = true) {
+    newValue = makeValueVec4(newValue)
     destinationValue = newValue
     if (!shouldAnimate) {
       value = newValue
@@ -16,37 +41,37 @@ export function createSpring (stiffness, dampening, value, lastValue = null) {
     }
   }
 
-  function isAtDestination (threshold = Number.EPSILON) {
-    // making sure we're near the destination and that velocity is below threshold
-    // NOTE: we could be doing this a better way perhaps?
+  function isAtDestination (threshold = precision) {
+    // TODO: use squared distance to save having to do Math.sqrt?
     return (
-      Math.abs(value - destinationValue) <= threshold &&
-      Math.abs(value - lastValue) <= threshold
+      vec4.distance(value, destinationValue) <= threshold &&
+      vec4.distance(value, lastValue) <= threshold
     )
   }
 
-  function tick (steps = 1, shouldUpdateInternally = true) {
-    if (steps < 1) throw new Error('tick() expects `steps` to be greater than 0')
-    if (!Number.isInteger(steps)) throw new Error('tick() expects `steps` to be an integer')
-
-    let _value = value
-    let _lastValue = lastValue
-    while (steps--) {
-      const velocity = _value - _lastValue
-      const delta = destinationValue - _value
-      const spring = delta * stiffness
-      const damper = velocity * -dampening
-      const acceleration = spring + damper
-      const nextValue = acceleration + velocity + _value
-      _lastValue = _value
-      _value = nextValue
+  function getCurrentValue (out = []) {
+    if (!isInputArray) return value[0]
+    for (let i = 0; i < vecComponents; i++) {
+      out[i] = value[i]
     }
+    return out
+  }
 
-    if (shouldUpdateInternally) {
-      lastValue = _lastValue
-      value = _value
+  function tick (out = [], s = stiffness, d = dampening) {
+    velocity = vec4.subtract(velocity, value, lastValue)
+    delta = vec4.subtract(delta, destinationValue, value)
+    const spring = vec4.scale(delta, delta, s)
+    const damper = vec4.scale(velocity, velocity, -d)
+    const acceleration = vec4.add(delta, spring, damper)
+    velocity = vec4.add(velocity, velocity, acceleration)
+    // TODO: figure out how to not have to create a new array on every frame
+    // maybe implement all vec4 functions with x, y, z, w, instead of arrays?
+    const nextValue = vec4.add([], velocity, value)
+    lastValue = value
+    value = nextValue
+    if (isAtDestination()) {
+      value = lastValue = destinationValue
     }
-
-    return _value
+    return getCurrentValue(out)
   }
 }

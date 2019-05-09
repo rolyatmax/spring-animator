@@ -1,27 +1,27 @@
 {
   "name": "spring-animator",
-  "version": "1.0.3",
+  "version": "2.0.0",
   "description": "a little tool for animating scalar and vector values with spring forces",
   "main": "lib/umd.js",
-  "module": "lib/index.js",
+  "module": "src/index.js",
   "license": "MIT",
   "author": {
     "name": "Taylor Baldwin",
     "email": "taylorbaldwin@gmail.com",
     "url": "https://tbaldw.in/"
   },
-  "dependencies": {},
+  "dependencies": {
+    "gl-vec4": "^1.0.1"
+  },
   "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-preset-es2015-rollup": "^3.0.0",
-    "rollup": "^0.41.6",
-    "standard": "^10.0.1",
-    "tape": "^4.6.3"
+    "rollup": "^1.11.3",
+    "rollup-plugin-commonjs": "^9.3.4",
+    "rollup-plugin-node-resolve": "^4.2.3",
+    "standard": "^12.0.1",
+    "tape": "^4.10.1"
   },
   "scripts": {
-    "bundle": "rollup --format=umd --name=SpringAnimator -- lib/index.js > lib/umd.js",
-    "transpile": "babel src --out-dir=lib --modules=false",
-    "build": "npm run transpile && npm run bundle",
+    "build": "rollup -c rollup.config.js",
     "test": "node test.js",
     "lint": "standard",
     "prepublish": "npm run build && npm run lint"

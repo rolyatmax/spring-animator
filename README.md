@@ -26,16 +26,17 @@ const startingValue = 10
 const spring = createSpring(stiffness, dampening, startingValue)
 
 // spring starts at initial value
-spring.tick() // returns 10
+spring.tick() // returns 10 (because we have not set a destination to animate towards)
 
-// set a new end value to animate towards
-spring.updateValue(15)
+// set a new destination value to animate towards
+spring.setDestination(15)
 
-spring.tick() // takes one step towards end value and returns the new value
+spring.tick() // takes one step towards destination value and returns the new value
 
-spring.tick(5) // takes five steps towards end value and returns the new value
+// pass custom stiffness and dampening values for just this tick
+spring.tick(0.1, 0.5)
 
-spring.tick(1, false) // takes one step towards end value and returns that value without updating the internal value - useful for calculating values for future steps
+spring.getCurrentValue() // returns the current value
 ```
 
 ### To animate 2D vectors, for example:
@@ -45,8 +46,8 @@ const xSpring = createSpring(stiffness, dampening, 50)
 const ySpring = createSpring(stiffness, dampening, 50)
 
 document.body.addEventListener('click', (e) => {
-  xSpring.updateValue(e.clientX)
-  ySpring.updateValue(e.clientY)
+  xSpring.setDestination(e.clientX)
+  ySpring.setDestination(e.clientY)
 })
 
 loop()

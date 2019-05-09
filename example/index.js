@@ -1,19 +1,19 @@
 /* global requestAnimationFrame */
 
-import { createSpring } from '../lib/index'
+import { createSpring } from '../src'
 import { GUI } from 'dat-gui'
 
 const maxRadius = 100
 const minRadius = 5
 
 const settings = {
-  dampening: 0.28,
-  stiffness: 0.03
+  stiffness: 0.03,
+  dampening: 0.28
 }
 
 const gui = new GUI()
-gui.add(settings, 'dampening', 0, 1.0).step(0.01).onChange(setupSprings)
 gui.add(settings, 'stiffness', 0, 1.0).step(0.01).onChange(setupSprings)
+gui.add(settings, 'dampening', 0, 1.0).step(0.01).onChange(setupSprings)
 gui.add({ clear }, 'clear')
 
 function clear () {
@@ -55,9 +55,9 @@ function setupSprings () {
 
 function setPositionAndRadius (position) {
   const newRadius = (maxRadius - minRadius) * Math.random() + minRadius
-  circle.radiusSpring.updateValue(newRadius)
-  circle.xSpring.updateValue(position[0])
-  circle.ySpring.updateValue(position[1])
+  circle.radiusSpring.setDestination(newRadius)
+  circle.xSpring.setDestination(position[0])
+  circle.ySpring.setDestination(position[1])
 }
 
 function setupCanvasAndGetContext (canvas) {
@@ -73,9 +73,9 @@ function setupCanvasAndGetContext (canvas) {
 function loop () {
   requestAnimationFrame(loop)
   clearRect(ctx, 'rgb(248, 245, 250)')
-  const x = circle.xSpring.tick(2)
+  const x = circle.xSpring.tick()
   const y = circle.ySpring.tick()
-  const radius = circle.radiusSpring.tick(2)
+  const radius = circle.radiusSpring.tick()
   lastValues.push([[x, y], radius])
   lastValues.forEach(([pos, rad]) => drawCircle(ctx, pos, rad, 'transparent', 'rgba(94, 126, 178, 0.4)'))
   drawCircle(ctx, [x, y], radius, 'rgb(94, 126, 178)', 'rgba(255, 255, 255, 0.8)')
