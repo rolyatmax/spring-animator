@@ -7,26 +7,21 @@ const maxRadius = 100
 const minRadius = 5
 
 const settings = {
-  stiffness: 0.03,
-  dampening: 0.28
+  stiffness: 0.003,
+  dampening: 0.08
 }
 
 const gui = new GUI()
-gui.add(settings, 'stiffness', 0, 1.0).step(0.01).onChange(setupSprings)
-gui.add(settings, 'dampening', 0, 1.0).step(0.01).onChange(setupSprings)
-gui.add({ clear }, 'clear')
-
-function clear () {
-  lastValues = []
-}
+gui.add(settings, 'stiffness', 0.001, 0.25).step(0.001)
+gui.add(settings, 'dampening', 0.01, 0.5).step(0.01)
+gui.add({ clear: setupSprings }, 'clear')
 
 const canvas = document.querySelector('canvas')
 const ctx = setupCanvasAndGetContext(canvas)
 
 canvas.addEventListener('click', (e) => {
   if (
-    circle.xSpring.isAtDestination(0.2) &&
-    circle.ySpring.isAtDestination(0.2) &&
+    circle.positionSpring.isAtDestination(0.2) &&
     circle.radiusSpring.isAtDestination(0.2)
   ) {
     lastValues = []
@@ -48,16 +43,14 @@ function setupSprings () {
   lastValues = []
   circle = {
     radiusSpring: createSpring(stiffness, dampening, 10),
-    xSpring: createSpring(stiffness, dampening, center[0]),
-    ySpring: createSpring(stiffness, dampening, center[1])
+    positionSpring: createSpring(stiffness, dampening, center)
   }
 }
 
 function setPositionAndRadius (position) {
   const newRadius = (maxRadius - minRadius) * Math.random() + minRadius
   circle.radiusSpring.setDestination(newRadius)
-  circle.xSpring.setDestination(position[0])
-  circle.ySpring.setDestination(position[1])
+  circle.positionSpring.setDestination(position)
 }
 
 function setupCanvasAndGetContext (canvas) {
@@ -73,12 +66,11 @@ function setupCanvasAndGetContext (canvas) {
 function loop () {
   requestAnimationFrame(loop)
   clearRect(ctx, 'rgb(248, 245, 250)')
-  const x = circle.xSpring.tick()
-  const y = circle.ySpring.tick()
-  const radius = circle.radiusSpring.tick()
-  lastValues.push([[x, y], radius])
+  const position = circle.positionSpring.tick([], settings.stiffness, settings.dampening)
+  const radius = circle.radiusSpring.tick(null, settings.stiffness, settings.dampening)
+  lastValues.push([position, radius])
   lastValues.forEach(([pos, rad]) => drawCircle(ctx, pos, rad, 'transparent', 'rgba(94, 126, 178, 0.4)'))
-  drawCircle(ctx, [x, y], radius, 'rgb(94, 126, 178)', 'rgba(255, 255, 255, 0.8)')
+  drawCircle(ctx, position, radius, 'rgb(94, 126, 178)', 'rgba(255, 255, 255, 0.8)')
 }
 
 function drawCircle (ctx, position, radius, fillColor = 'transparent', strokeColor = 'transparent') {

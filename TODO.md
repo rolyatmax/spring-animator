@@ -7,8 +7,11 @@
 - [X] remove `step` arg from tick()
 - [X] fix example (`stiffness`, _then_ `dampening`)
 - [X] rename `updateValue` to `setDestination`
-- [ ] implement vec4 fns with just x, y, z, w (no arrays)?
+- [X] update demo to choose better ranges for `stiffness` and `dampening`
+- [ ] add console.log suggesting spring/dampen vals when none are provided? link to example?
+- [ ] what if dampening increased as you got closer to target?
+- [-] implement vec4 fns with just x, y, z, w (no arrays)?
+- [ ] rewrite docs & README
 - [ ] merge package.jsons from example and root
 - [ ] write some tests
-- [ ] update demo to choose better ranges for `stiffness` and `dampening`
 - [ ] add other types of physics based animators?
