@@ -9,17 +9,21 @@ export function createSpring (stiffness, dampening, value, precision) {
     throw new Error(`spring-animator: expected value \`${value}\` to be a scalar, vec2, vec3, or vec4`)
   }
 
-  function makeValueVec4 (v) {
+  function makeValueVec4 (out = [], v) {
     if (isInputArray !== Array.isArray(v) || (isInputArray && vecComponents !== v.length)) {
       throw new Error(`spring-animator: destination value type must match initial value type: ${!isInputArray ? 'scalar' : vecComponents + '-component vector'}`)
     }
-    if (Number.isFinite(v)) return [v, 0, 0, 0]
-    v = v.slice()
-    while (v.length < 4) v.push(0)
-    return v
+    if (Number.isFinite(v)) {
+      out[0] = v
+      out[1] = out[2] = out[3] = 0
+      return out
+    }
+    vec4.copy(out, v)
+    while (out.length < 4) out.push(0)
+    return out
   }
 
-  value = makeValueVec4(value)
+  value = makeValueVec4([], value)
   let lastValue = vec4.copy([], value)
   let destinationValue = vec4.copy([], value)
 
@@ -39,11 +43,10 @@ export function createSpring (stiffness, dampening, value, precision) {
   }
 
   function setDestination (newValue, shouldAnimate = true) {
-    newValue = makeValueVec4(newValue)
-    destinationValue = newValue
+    makeValueVec4(destinationValue, newValue)
     if (!shouldAnimate) {
-      vec4.copy(value, newValue)
-      vec4.copy(lastValue, newValue)
+      vec4.copy(value, destinationValue)
+      vec4.copy(lastValue, destinationValue)
     }
   }
 
