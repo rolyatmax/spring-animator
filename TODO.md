@@ -8,10 +8,14 @@
 - [X] fix example (`stiffness`, _then_ `dampening`)
 - [X] rename `updateValue` to `setDestination`
 - [X] update demo to choose better ranges for `stiffness` and `dampening`
+- [X] optimize so no arrays are created beyond initialization
 - [ ] add console.log suggesting spring/dampen vals when none are provided? link to example?
-- [ ] what if dampening increased as you got closer to target?
-- [-] implement vec4 fns with just x, y, z, w (no arrays)?
 - [ ] rewrite docs & README
 - [ ] merge package.jsons from example and root
 - [ ] write some tests
-- [ ] add other types of physics based animators?
+- [ ] bump package version and publish
+
+# not gonna do:
+
+- [-] add other types of physics based animators?
+- [-] what if dampening increased as you got closer to target?
