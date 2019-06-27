@@ -25,10 +25,7 @@ const startingValue = 10
 
 const spring = createSpring(stiffness, dampening, startingValue)
 
-// spring starts at initial value
-spring.tick() // returns 10 (because we have not set a destination to animate towards)
-
-// set a new destination value to animate towards
+// must first set a new destination value to animate towards
 spring.setDestination(15)
 
 spring.tick() // takes one step towards destination value
