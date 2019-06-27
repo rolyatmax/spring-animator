@@ -14,14 +14,18 @@
     "gl-vec4": "^1.0.1"
   },
   "devDependencies": {
+    "dat-gui": "^0.5.0",
     "rollup": "^1.11.3",
     "rollup-plugin-commonjs": "^9.3.4",
     "rollup-plugin-node-resolve": "^4.2.3",
+    "rollup-watch": "^4.3.1",
     "standard": "^12.0.1",
     "tape": "^4.10.1"
   },
   "scripts": {
     "build": "rollup -c rollup.config.js",
+    "build-example": "mkdir -p docs && rollup --config=example.rollup.config.js && cp example/index.html docs/ && cp example/bundle.js docs/",
+    "start": "rollup --watch --config=example.rollup.config.js",
     "test": "node test.js",
     "lint": "standard",
     "prepublish": "npm run build && npm run lint"

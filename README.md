@@ -19,8 +19,8 @@ npm install spring-animator --save
 ```js
 import { createSpring } from 'spring-animator'
 
-const stiffness = 0.03
-const dampening = 0.28
+const stiffness = 0.003
+const dampening = 0.1
 const startingValue = 10
 
 const spring = createSpring(stiffness, dampening, startingValue)
@@ -31,23 +31,33 @@ spring.tick() // returns 10 (because we have not set a destination to animate to
 // set a new destination value to animate towards
 spring.setDestination(15)
 
-spring.tick() // takes one step towards destination value and returns the new value
+spring.tick() // takes one step towards destination value
 
 // pass custom stiffness and dampening values for just this tick
-spring.tick(0.1, 0.5)
+spring.tick(0.003, 0.1)
 
-spring.getCurrentValue() // returns the current value
+const value = spring.getCurrentValue() // returns the current value
+```
+
+I personally like these values:
+
+```js
+{
+  stiffness: 0.003,
+  dampening: 0.1
+}
 ```
 
 ## To run the example:
 
 ```sh
-cd example
 npm install
 npm start
 ```
 
-Or try it out [here](https://rolyatmax.github.io/spring-animator/).
+And then make sure to open example/index.html in a browser!
+
+Or you can just try it out [here](https://rolyatmax.github.io/spring-animator/).
 
 [![NPM](https://nodei.co/npm/spring-animator.png)](https://www.npmjs.com/package/spring-animator)
 

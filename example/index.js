@@ -3,16 +3,17 @@
 import { createSpring } from '../src'
 import { GUI } from 'dat-gui'
 
-const maxRadius = 100
-const minRadius = 5
+const MAX_RADIUS = 100
+const MIN_RADIUS = 5
+const LAST_VALUES_TRAIL_LENGTH = 500
 
 const settings = {
   stiffness: 0.003,
-  dampening: 0.08
+  dampening: 0.1
 }
 
 const gui = new GUI()
-gui.add(settings, 'stiffness', 0.001, 0.25).step(0.001)
+gui.add(settings, 'stiffness', 0.001, 0.08).step(0.001)
 gui.add(settings, 'dampening', 0.01, 0.5).step(0.01)
 gui.add({ clear: setupSprings }, 'clear')
 
@@ -48,7 +49,7 @@ function setupSprings () {
 }
 
 function setPositionAndRadius (position) {
-  const newRadius = (maxRadius - minRadius) * Math.random() + minRadius
+  const newRadius = (MAX_RADIUS - MIN_RADIUS) * Math.random() + MIN_RADIUS
   circle.radiusSpring.setDestination(newRadius)
   circle.positionSpring.setDestination(position)
 }
@@ -66,11 +67,14 @@ function setupCanvasAndGetContext (canvas) {
 function loop () {
   requestAnimationFrame(loop)
   clearRect(ctx, 'rgb(248, 245, 250)')
-  const position = circle.positionSpring.tick([], settings.stiffness, settings.dampening)
-  const radius = circle.radiusSpring.tick(null, settings.stiffness, settings.dampening)
-  lastValues.push([position, radius])
+  circle.positionSpring.tick(settings.stiffness, settings.dampening)
+  circle.radiusSpring.tick(settings.stiffness, settings.dampening)
+  const position = circle.positionSpring.getCurrentValue()
+  const radius = circle.radiusSpring.getCurrentValue()
+  lastValues = lastValues.slice(Math.max(0, lastValues.length - LAST_VALUES_TRAIL_LENGTH))
   lastValues.forEach(([pos, rad]) => drawCircle(ctx, pos, rad, 'transparent', 'rgba(94, 126, 178, 0.4)'))
   drawCircle(ctx, position, radius, 'rgb(94, 126, 178)', 'rgba(255, 255, 255, 0.8)')
+  lastValues.push([position, radius])
 }
 
 function drawCircle (ctx, position, radius, fillColor = 'transparent', strokeColor = 'transparent') {

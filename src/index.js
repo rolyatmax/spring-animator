@@ -5,6 +5,10 @@ export function createSpring (stiffness, dampening, value, precision) {
   const isInputArray = Array.isArray(value)
   const vecComponents = isInputArray ? value.length : Number.isFinite(value) ? 1 : null
 
+  if (!Number.isFinite(stiffness) || !Number.isFinite(dampening)) {
+    throw new Error(`spring-animator: expected numbers for stiffness and dampening. (e.g. createSpring(0.003, 0.1, startingValue))`)
+  }
+
   if (!vecComponents || vecComponents > 4) {
     throw new Error(`spring-animator: expected value \`${value}\` to be a scalar, vec2, vec3, or vec4`)
   }
@@ -67,7 +71,7 @@ export function createSpring (stiffness, dampening, value, precision) {
     return out
   }
 
-  function tick (out = [], s = stiffness, d = dampening) {
+  function tick (s = stiffness, d = dampening) {
     vec4.subtract(velocity, value, lastValue)
     vec4.subtract(delta, destinationValue, value)
     vec4.scale(spring, delta, s)
@@ -81,6 +85,5 @@ export function createSpring (stiffness, dampening, value, precision) {
       vec4.copy(value, destinationValue)
       vec4.copy(lastValue, destinationValue)
     }
-    return getCurrentValue(out)
   }
 }
