@@ -19,54 +19,42 @@ npm install spring-animator --save
 ```js
 import { createSpring } from 'spring-animator'
 
-const dampening = 0.28
-const stiffness = 0.03
+const stiffness = 0.003
+const dampening = 0.1
 const startingValue = 10
 
 const spring = createSpring(stiffness, dampening, startingValue)
 
-// spring starts at initial value
-spring.tick() // returns 10
+// must first set a new destination value to animate towards
+spring.setDestination(15)
 
-// set a new end value to animate towards
-spring.updateValue(15)
+spring.tick() // takes one step towards destination value
 
-spring.tick() // takes one step towards end value and returns the new value
+// pass custom stiffness and dampening values for just this tick
+spring.tick(0.003, 0.1)
 
-spring.tick(5) // takes five steps towards end value and returns the new value
-
-spring.tick(1, false) // takes one step towards end value and returns that value without updating the internal value - useful for calculating values for future steps
+const value = spring.getCurrentValue() // returns the current value
 ```
 
-### To animate 2D vectors, for example:
+I personally like these values:
 
 ```js
-const xSpring = createSpring(stiffness, dampening, 50)
-const ySpring = createSpring(stiffness, dampening, 50)
-
-document.body.addEventListener('click', (e) => {
-  xSpring.updateValue(e.clientX)
-  ySpring.updateValue(e.clientY)
-})
-
-loop()
-function loop () {
-  requestAnimationFrame(loop)
-  const x = xSpring.tick()
-  const y = ySpring.tick()
-  renderObjectAtPosition([x, y])
+{
+  stiffness: 0.003,
+  dampening: 0.1
 }
 ```
 
 ## To run the example:
 
 ```sh
-cd example
 npm install
 npm start
 ```
 
-Or try it out [here](https://rolyatmax.github.io/spring-animator/).
+And then make sure to open example/index.html in a browser!
+
+Or you can just try it out [here](https://rolyatmax.github.io/spring-animator/).
 
 [![NPM](https://nodei.co/npm/spring-animator.png)](https://www.npmjs.com/package/spring-animator)
 

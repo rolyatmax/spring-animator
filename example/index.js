@@ -1,32 +1,28 @@
 /* global requestAnimationFrame */
 
-import { createSpring } from '../lib/index'
+import { createSpring } from '../src'
 import { GUI } from 'dat-gui'
 
-const maxRadius = 100
-const minRadius = 5
+const MAX_RADIUS = 100
+const MIN_RADIUS = 5
+const LAST_VALUES_TRAIL_LENGTH = 500
 
 const settings = {
-  dampening: 0.28,
-  stiffness: 0.03
+  stiffness: 0.003,
+  dampening: 0.1
 }
 
 const gui = new GUI()
-gui.add(settings, 'dampening', 0, 1.0).step(0.01).onChange(setupSprings)
-gui.add(settings, 'stiffness', 0, 1.0).step(0.01).onChange(setupSprings)
-gui.add({ clear }, 'clear')
-
-function clear () {
-  lastValues = []
-}
+gui.add(settings, 'stiffness', 0.001, 0.08).step(0.001)
+gui.add(settings, 'dampening', 0.01, 0.5).step(0.01)
+gui.add({ clear: setupSprings }, 'clear')
 
 const canvas = document.querySelector('canvas')
 const ctx = setupCanvasAndGetContext(canvas)
 
 canvas.addEventListener('click', (e) => {
   if (
-    circle.xSpring.isAtDestination(0.2) &&
-    circle.ySpring.isAtDestination(0.2) &&
+    circle.positionSpring.isAtDestination(0.2) &&
     circle.radiusSpring.isAtDestination(0.2)
   ) {
     lastValues = []
@@ -48,16 +44,14 @@ function setupSprings () {
   lastValues = []
   circle = {
     radiusSpring: createSpring(stiffness, dampening, 10),
-    xSpring: createSpring(stiffness, dampening, center[0]),
-    ySpring: createSpring(stiffness, dampening, center[1])
+    positionSpring: createSpring(stiffness, dampening, center)
   }
 }
 
 function setPositionAndRadius (position) {
-  const newRadius = (maxRadius - minRadius) * Math.random() + minRadius
-  circle.radiusSpring.updateValue(newRadius)
-  circle.xSpring.updateValue(position[0])
-  circle.ySpring.updateValue(position[1])
+  const newRadius = (MAX_RADIUS - MIN_RADIUS) * Math.random() + MIN_RADIUS
+  circle.radiusSpring.setDestination(newRadius)
+  circle.positionSpring.setDestination(position)
 }
 
 function setupCanvasAndGetContext (canvas) {
@@ -73,12 +67,14 @@ function setupCanvasAndGetContext (canvas) {
 function loop () {
   requestAnimationFrame(loop)
   clearRect(ctx, 'rgb(248, 245, 250)')
-  const x = circle.xSpring.tick(2)
-  const y = circle.ySpring.tick()
-  const radius = circle.radiusSpring.tick(2)
-  lastValues.push([[x, y], radius])
+  circle.positionSpring.tick(settings.stiffness, settings.dampening)
+  circle.radiusSpring.tick(settings.stiffness, settings.dampening)
+  const position = circle.positionSpring.getCurrentValue()
+  const radius = circle.radiusSpring.getCurrentValue()
+  lastValues = lastValues.slice(Math.max(0, lastValues.length - LAST_VALUES_TRAIL_LENGTH))
   lastValues.forEach(([pos, rad]) => drawCircle(ctx, pos, rad, 'transparent', 'rgba(94, 126, 178, 0.4)'))
-  drawCircle(ctx, [x, y], radius, 'rgb(94, 126, 178)', 'rgba(255, 255, 255, 0.8)')
+  drawCircle(ctx, position, radius, 'rgb(94, 126, 178)', 'rgba(255, 255, 255, 0.8)')
+  lastValues.push([position, radius])
 }
 
 function drawCircle (ctx, position, radius, fillColor = 'transparent', strokeColor = 'transparent') {
