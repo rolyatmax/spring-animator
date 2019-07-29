@@ -11,7 +11,7 @@ export default {
   plugins: [
     resolve(),
     commonjs({
-      namedExports: { 'dat-gui': ['GUI'] }
+      namedExports: { 'dat.gui': ['GUI'] }
     })
   ]
 }

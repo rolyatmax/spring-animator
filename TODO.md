@@ -12,7 +12,11 @@
 - [X] add console.log suggesting spring/dampen vals when none are provided? link to example?
 - [X] rewrite docs & README
 - [X] merge package.jsons from example and root
-- [X] bump package version and publish
+- [ ] Add speed to example
+- [ ] Add spring presets to example
+- [ ] Add info on choosing the right stiffness/dampening & using loops to speed up the animation
+- [ ] Add max speed to API?
+- [ ] bump package version and publish
 
 # not gonna do:
 
