@@ -14,7 +14,7 @@
     "gl-vec4": "^1.0.1"
   },
   "devDependencies": {
-    "dat-gui": "^0.5.0",
+    "dat.gui": "0.7.6",
     "rollup": "^1.11.3",
     "rollup-plugin-commonjs": "^9.3.4",
     "rollup-plugin-node-resolve": "^4.2.3",

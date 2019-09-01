@@ -1,7 +1,7 @@
 /* global requestAnimationFrame */
 
 import { createSpring } from '../src'
-import { GUI } from 'dat-gui'
+import { GUI } from 'dat.gui'
 
 const MAX_RADIUS = 100
 const MIN_RADIUS = 5

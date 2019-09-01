@@ -17,13 +17,18 @@ export function createSpring (stiffness, dampening, value, precision) {
     if (isInputArray !== Array.isArray(v) || (isInputArray && vecComponents !== v.length)) {
       throw new Error(`spring-animator: destination value type must match initial value type: ${!isInputArray ? 'scalar' : vecComponents + '-component vector'}`)
     }
+
     if (Number.isFinite(v)) {
       out[0] = v
       out[1] = out[2] = out[3] = 0
       return out
     }
-    vec4.copy(out, v)
-    while (out.length < 4) out.push(0)
+
+    let i = 0
+    while (i < 4) {
+      out[i] = i < v.length ? v[i] : 0
+      i += 1
+    }
     return out
   }
 
