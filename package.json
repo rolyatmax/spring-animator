@@ -31,7 +31,8 @@
     "prepublish": "npm run build && npm run lint"
   },
   "files": [
-    "lib"
+    "lib",
+    "src"
   ],
   "keywords": [
     "animate",
